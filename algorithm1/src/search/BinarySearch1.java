@@ -16,7 +16,7 @@ public class BinarySearch1 {
 			a[i]=sc.nextInt();
 		}
 		Arrays.sort(a);
-		int m = sc.nextInt(); //찾을값 m개 주어짐
+		int m = sc.nextInt(); //찾을값 m 주어짐
 		for(int i=0; i<m;i++) {
 			boolean find = false;
 			int target = sc.nextInt();

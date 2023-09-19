@@ -30,5 +30,6 @@ public class Greedy1 {
 		System.out.println(a[i]+"원 동전"+count[i]+"개 ");	
 		}
 		System.out.println("총동전 "+totalCount+"개 사용햇습니다.");
+		sc.close();
 	} // totalcount를 for문안에 넣지말고 그냥 count배열의 총합을 구하는게 낫지 않았을까...
 }
