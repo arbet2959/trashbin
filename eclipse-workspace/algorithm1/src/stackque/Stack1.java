@@ -38,5 +38,7 @@ public class Stack1 {
 		}
 		
 	if (result) System.out.println(bf.toString());
+	sc.close();
+	
 	}
 }

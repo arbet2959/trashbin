@@ -11,6 +11,9 @@ import java.util.StringTokenizer;
 //반복
 //백준11004
 public class Quicksort1 {
+	
+	
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -41,7 +44,14 @@ public class Quicksort1 {
 			return end;
 		}
 		int m = (start+end)/2;
-		swap(a,start,m);          
+		swap(a,start,m);   
+		
+		
+//		e = swap(s , (s = e));
+//				
+//				static <T> T swap(T s ,T e ){return s;}
+//				
+
 		int pivot = a[start]; //가운데에서 고르고 맨앞으로 옮긴후 피벗지정
 		int i = start+1, j = end;
 		while(i<=j) {
