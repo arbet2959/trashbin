@@ -1,21 +1,30 @@
 package dynamic_beat_1;
 
 public class Track {
-	private String titleImage;
-	private String startImage;
-	private String gameImage;
-	private String startMusic;
-	private String gameMusic;
+	private String titleImage; //시작이전 제목파일
+	private String startImage;//시작이전 표지파일
+	private String gameImage;//시작후 표지
+	private String startMusic;//시작전 음악파일
+	private String gameMusic;//시작후 음악파일
+	private String titleName;//곡제목
 	
 	
 	
-	public Track(String titleImage, String startImage, String gameImage, String startMusic, String gameMusic) {
+	
+	public Track(String titleImage, String startImage, String gameImage, String startMusic, String gameMusic, String titleName) {
 		super();
 		this.titleImage = titleImage;
 		this.startImage = startImage;
 		this.gameImage = gameImage;
 		this.startMusic = startMusic;
 		this.gameMusic = gameMusic;
+		this.titleName = titleName;
+	}
+	public String getTitleName() {
+		return titleName;
+	}
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
 	}
 	public String getTitleImage() {
 		return titleImage;
