@@ -67,30 +67,34 @@ public class Note extends Thread{
 		}
 	}
 	
-	public void judge() { // 580기준
-		if(y>=630) {
-			System.out.println("Late");
+	public String judge() { // 580기준
+		if(y>=610) {
 			close();
-		}else if(y>=610) {
-			System.out.println("good");
+			return "Late";
+		}else if(y>=600) {
 			close();
-		}else if(y>=590) {
-			System.out.println("Great");
+			return "Good";
+		}else if(y>=587) {
 			close();
-		}else if(y>=570) {
-			System.out.println("Perpect");
+			return "Great";
+		}else if(y>=573) {
 			close();
+			return "Perpect";
+		}else if(y>=565) {
+			close();
+			return "Great";
 		}else if(y>=550) {
-			System.out.println("Great");
 			close();
-		}else if(y>=530) {
-			System.out.println("good");
+			return "Good";	
+		}else if(y>=535) {
 			close();
-		}else if(y>=510) {
-			System.out.println("Early");
-			close();
-		}
+			return "Early";
+		}else return "None";
 		
+	}
+	
+	public int getY() {
+		return y;
 	}
 	public boolean isProceeded() {
 		return proceeded;

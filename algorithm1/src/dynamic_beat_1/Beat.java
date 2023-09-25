@@ -9,7 +9,7 @@ public class Beat {
 	public Beat(int time, String noteName) {
 		super();
 		this.time = time;
-		this.noteName = noteName;
+		this.noteName = noteName;	
 	}
 	
 	public int getTime() {

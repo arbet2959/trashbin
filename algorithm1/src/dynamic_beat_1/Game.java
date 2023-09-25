@@ -24,6 +24,9 @@ public class Game extends Thread{
 	private Image noteRouteJImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/noteRoute.png")).getImage();
 	private Image noteRouteKImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/noteRoute.png")).getImage();
 	private Image noteRouteLImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/noteRoute.png")).getImage();
+	private Image blueFlareImage;
+	private Image judgeImage;
+	
 	
 	private String titleName;
 	private String difficulty;
@@ -59,11 +62,13 @@ public class Game extends Thread{
 		g.drawImage(noteRouteLineImage, 948, 30, null);
 		g.drawImage(noteRouteLineImage, 1052, 30, null);
 
-		g.drawImage(judgementLineImage, 0, 580, null);
 		g.drawImage(gameInfoImage, 0, 660, null);
+		g.drawImage(judgementLineImage, 0, 580, null);
 		
 		for(int i=0; i < noteList.size(); i++) {
 			Note note = noteList.get(i);
+			if(note.getY()> 620)
+				judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/miss.png")).getImage();
 			if(!note.isProceeded()) {
 				noteList.remove(i);
 				i--;
@@ -91,6 +96,8 @@ public class Game extends Thread{
 		g.setColor(Color.LIGHT_GRAY);
 		g.setFont(new Font("Elephant", Font.PLAIN , 26));
 		g.drawString("000000", 565, 702);
+		g.drawImage(blueFlareImage, 550 , 440, null);
+		g.drawImage(judgeImage, 460 , 420, null);
 		
 		
 	}
@@ -177,7 +184,7 @@ public class Game extends Thread{
 					new Beat(startTime + gap * 39, "S"), new Beat(startTime + gap * 41, "D"),
 					new Beat(startTime + gap * 43, "S"), new Beat(startTime + gap * 45, "D"),
 					new Beat(startTime + gap * 48, "J"), new Beat(startTime + gap * 49, "K"),
-					new Beat(startTime + gap * 50, "L"), new Beat(startTime + gap * 52, "F"),
+					new Beat(startTime + gap * 50, "L"), new Beat(startTime + gap * 52, "F"),	
 					new Beat(startTime + gap * 52, "Space"), new Beat(startTime + gap * 52, "J"),
 					new Beat(startTime + gap * 54, "S"), new Beat(startTime + gap * 56, "D"),
 					new Beat(startTime + gap * 59, "F"), new Beat(startTime + gap * 59, "Space"),
@@ -289,9 +296,26 @@ public class Game extends Thread{
 		for(int i=0; i< noteList.size();i++) {
 			Note note = noteList.get(i);
 			if(input.equals(note.getNoteType())) {
-				note.judge();
+				judgeEvent(note.judge());
 				break;
 			}
 		}
+	}
+	
+	public void judgeEvent(String judge) {
+		if(!judge.equals("None"))
+			blueFlareImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/blueflare.png")).getImage();
+		if(judge.equals("Miss"))
+			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/miss.png")).getImage();
+		if(judge.equals("Late"))
+			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/late.png")).getImage();
+		if(judge.equals("Good"))
+			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/good.png")).getImage();
+		if(judge.equals("Great"))
+			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Great.png")).getImage();
+		if(judge.equals("Perfect"))
+			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Perfect.png")).getImage();
+		if(judge.equals("Early"))
+			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Early.png")).getImage();
 	}
 }

@@ -49,7 +49,7 @@ public class Music extends Thread {
 			} while(isLoop);
 		} catch (Exception e) {
 			System.out.println(e.toString());
-		}
+		}	
 		 
 	 }
 }
