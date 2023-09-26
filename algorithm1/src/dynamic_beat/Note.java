@@ -1,4 +1,4 @@
-package dynamic_beat_1;
+package dynamic_beat;
 
 import java.awt.Graphics2D;
 import java.awt.Image;

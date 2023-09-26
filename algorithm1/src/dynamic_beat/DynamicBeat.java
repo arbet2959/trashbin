@@ -1,4 +1,4 @@
-package dynamic_beat_1;
+package dynamic_beat;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -38,6 +38,12 @@ public class DynamicBeat extends JFrame{
 	private ImageIcon hardButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/hardButtonEntered.png"));
 	private ImageIcon backButtonBasic = new ImageIcon(Main.class.getClassLoader().getResource("./images/backButtonBasic.png"));
 	private ImageIcon backButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/backButtonEntered.png"));
+	private ImageIcon signUpButtonBasic = new ImageIcon(Main.class.getClassLoader().getResource("./images/signUpButtonBasic.png"));
+	private ImageIcon signUpButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/signUpButtonEntered.png"));
+	private ImageIcon loginButtonBasic = new ImageIcon(Main.class.getClassLoader().getResource("./images/loginButtonBasic.png"));
+	private ImageIcon loginButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/loginButtonEntered.png"));
+	private ImageIcon rankingButtonBasic = new ImageIcon(Main.class.getClassLoader().getResource("./images/rankingButtonBasic.png"));
+	private ImageIcon rankingButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/rankingButtonEntered.png"));
 	
 	private Image background = new ImageIcon(Main.class.getClassLoader().getResource("./images/introBackground.jpg")).getImage();
 	private Image titleImage;
@@ -53,6 +59,9 @@ public class DynamicBeat extends JFrame{
 	private JButton easyButton = new JButton(easyButtonBasic);
 	private JButton hardButton = new JButton(hardButtonBasic);
 	private JButton backButton = new JButton(backButtonBasic);
+	private JButton signUpButton = new JButton(signUpButtonBasic);
+	private JButton loginButton = new JButton(loginButtonBasic);
+	private JButton rankingButton = new JButton(rankingButtonBasic);
 	
 	private Music introMusic = new Music("introMusic.mp3",true);
 	
@@ -158,7 +167,7 @@ public class DynamicBeat extends JFrame{
 			add(startButton);
 			
 		//종료버튼
-			quitButton.setBounds(40, 330, 400, 100);
+			quitButton.setBounds(40, 325, 400, 100);
 			quitButton.setBorderPainted(false);
 			quitButton.setContentAreaFilled(false);
 			quitButton.setFocusPainted(false);  // JButton기본형식해제
@@ -189,6 +198,98 @@ public class DynamicBeat extends JFrame{
 				}
 			});
 			add(quitButton);
+			
+			//회원가입버튼
+			signUpButton.setBounds(40, 450, 400, 100);
+			signUpButton.setBorderPainted(false);
+			signUpButton.setContentAreaFilled(false);
+			signUpButton.setFocusPainted(false);  // Jbutton기본형식해제
+			signUpButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					signUpButton.setIcon(signUpButtonEntered);
+					signUpButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+					Music buttonEnteredMusic = new Music("buttonEnteredMusic.mp3",false);
+					buttonEnteredMusic.start();
+				}
+				@Override
+				public void mouseExited(MouseEvent e ) {
+					signUpButton.setIcon(signUpButtonBasic);
+					signUpButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					
+				}
+				@Override
+				public void mousePressed(MouseEvent e) {
+					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
+					buttonPressedMusic.start();
+					introMusic.close();
+					//회원가입창 구현해서 넣기
+				}
+			});
+			add(signUpButton);
+			
+		//로그인버튼
+			loginButton.setBounds(40, 575, 400, 100);
+			loginButton.setBorderPainted(false);
+			loginButton.setContentAreaFilled(false);
+			loginButton.setFocusPainted(false);  // Jbutton기본형식해제
+			loginButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					loginButton.setIcon(loginButtonEntered);
+					loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+					Music buttonEnteredMusic = new Music("buttonEnteredMusic.mp3",false);
+					buttonEnteredMusic.start();
+				}
+				@Override
+				public void mouseExited(MouseEvent e ) {
+					loginButton.setIcon(loginButtonBasic);
+					loginButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					
+				}
+				@Override
+				public void mousePressed(MouseEvent e) {
+					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
+					buttonPressedMusic.start();
+					introMusic.close();
+					//로그인창 구현해서 넣기
+				}
+			});
+			add(loginButton);
+			
+		//랭킹버튼
+			rankingButton.setBounds(700, 575, 400, 100);
+			rankingButton.setBorderPainted(false);
+			rankingButton.setContentAreaFilled(false);
+			rankingButton.setFocusPainted(false);  // Jbutton기본형식해제
+			rankingButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					rankingButton.setIcon(rankingButtonEntered);
+					rankingButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+					Music buttonEnteredMusic = new Music("buttonEnteredMusic.mp3",false);
+					buttonEnteredMusic.start();
+				}
+				@Override
+				public void mouseExited(MouseEvent e ) {
+					rankingButton.setIcon(rankingButtonBasic);
+					rankingButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					
+				}
+				@Override
+				public void mousePressed(MouseEvent e) {
+					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
+					buttonPressedMusic.start();
+					introMusic.close();
+					//로그인창 구현해서 넣기
+				}
+			});
+			add(rankingButton);
+			
+			
+			
+			
+			
 			
 			//left버튼
 			leftButton.setVisible(false);
@@ -427,6 +528,9 @@ public class DynamicBeat extends JFrame{
 		selectTrack(0);
 		startButton.setVisible(false);
 		quitButton.setVisible(false);
+		signUpButton.setVisible(false);
+		loginButton.setVisible(false);
+		rankingButton.setVisible(false);
 		leftButton.setVisible(true);
 		rightButton.setVisible(true);
 		easyButton.setVisible(true);
