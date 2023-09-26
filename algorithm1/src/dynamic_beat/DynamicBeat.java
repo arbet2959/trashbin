@@ -17,6 +17,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class DynamicBeat extends JFrame{
 	private Image screenImage;
@@ -44,6 +48,10 @@ public class DynamicBeat extends JFrame{
 	private ImageIcon loginButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/loginButtonEntered.png"));
 	private ImageIcon rankingButtonBasic = new ImageIcon(Main.class.getClassLoader().getResource("./images/rankingButtonBasic.png"));
 	private ImageIcon rankingButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/rankingButtonEntered.png"));
+	private ImageIcon signUpInsertButtonBasic = new ImageIcon(Main.class.getClassLoader().getResource("./images/signUpInsertButtonBasic.png"));
+	private ImageIcon signUpInsertButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/signUpInsertButtonEntered.png"));
+	private ImageIcon signUpCancleButtonBasic = new ImageIcon(Main.class.getClassLoader().getResource("./images/signUpCancleButtonBasic.png"));
+	private ImageIcon signUpCancleButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/signUpCancleButtonEntered.png"));
 	
 	private Image background = new ImageIcon(Main.class.getClassLoader().getResource("./images/introBackground.jpg")).getImage();
 	private Image titleImage;
@@ -60,10 +68,16 @@ public class DynamicBeat extends JFrame{
 	private JButton hardButton = new JButton(hardButtonBasic);
 	private JButton backButton = new JButton(backButtonBasic);
 	private JButton signUpButton = new JButton(signUpButtonBasic);
+	private JButton signUpInsertButton = new JButton(signUpInsertButtonBasic);
+	private JButton signUpCancleButton = new JButton(signUpCancleButtonBasic);
 	private JButton loginButton = new JButton(loginButtonBasic);
 	private JButton rankingButton = new JButton(rankingButtonBasic);
 	
 	private Music introMusic = new Music("introMusic.mp3",true);
+	
+	private JLabel lbID,lbPassword,lbAge,lbEmail;
+	private JTextField txtName, txtAge, txtEmail;
+	private JPasswordField txtPassword;
 	
 	private int mouseX, mouseY;
 	
@@ -72,8 +86,10 @@ public class DynamicBeat extends JFrame{
 	List<Track> trackList = new ArrayList<Track>();
 	private Music selectedMusic;
 	private int nowselected = 0;
+	private IdDTO idDTO;
 	
 	public static Game game;
+	public static String ID;
 	
 	public DynamicBeat() {
 		Track mightyLove = new Track("Mighty Love Title image.png", "Mighty Love Start image.png",
@@ -94,7 +110,7 @@ public class DynamicBeat extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		setBackground(new Color(0, 0, 0, 0)); // rgb+alpha(투명도)
-		setLayout(null);
+		getContentPane().setLayout(null);
 		addKeyListener(new KeyListener());
 		
 		introMusic.start();
@@ -133,7 +149,7 @@ public class DynamicBeat extends JFrame{
 				System.exit(0);
 			}
 		});
-		add(exitButton);
+		getContentPane().add(exitButton);
 		
 	//시작버튼
 			startButton.setBounds(40, 200, 400, 100);
@@ -164,7 +180,7 @@ public class DynamicBeat extends JFrame{
 					
 				}
 			});
-			add(startButton);
+			getContentPane().add(startButton);
 			
 		//종료버튼
 			quitButton.setBounds(40, 325, 400, 100);
@@ -197,7 +213,7 @@ public class DynamicBeat extends JFrame{
 					System.exit(0);
 				}
 			});
-			add(quitButton);
+			getContentPane().add(quitButton);
 			
 			//회원가입버튼
 			signUpButton.setBounds(40, 450, 400, 100);
@@ -222,11 +238,143 @@ public class DynamicBeat extends JFrame{
 				public void mousePressed(MouseEvent e) {
 					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
 					buttonPressedMusic.start();
-					introMusic.close();
+					
 					//회원가입창 구현해서 넣기
+					SelectSignUp();
+				}	
+			});
+			getContentPane().add(signUpButton);
+			
+			lbID = new JLabel("아이디");
+			lbID.setHorizontalAlignment(SwingConstants.CENTER);
+			lbID.setOpaque(true); 
+			lbID.setBackground(Color.black);
+			lbID.setForeground(Color.WHITE);
+			lbID.setFont(new Font("굴림", Font.BOLD, 20));
+			lbID.setBounds(200, 200, 150, 40);
+			lbID.setVisible(false);
+			getContentPane().add(lbID);
+			
+			lbAge = new JLabel("나 이");
+			lbAge.setHorizontalAlignment(SwingConstants.CENTER);
+			lbAge.setFont(new Font("굴림", Font.BOLD, 20));
+			lbAge.setOpaque(true); 
+			lbAge.setBackground(Color.black);
+			lbAge.setForeground(Color.WHITE);
+			lbAge.setBounds(200, 300, 150, 40);
+			lbAge.setVisible(false);
+			getContentPane().add(lbAge);
+		
+			
+			lbPassword = new JLabel("비밀번호");
+			lbPassword.setHorizontalAlignment(SwingConstants.CENTER);
+			lbPassword.setFont(new Font("굴림", Font.BOLD, 20));
+			lbPassword.setOpaque(true); 
+			lbPassword.setBackground(Color.black);
+			lbPassword.setForeground(Color.WHITE);
+			lbPassword.setBounds(200, 400, 150, 40);
+			lbPassword.setVisible(false);
+			getContentPane().add(lbPassword);
+			
+			lbEmail = new JLabel("이메일");
+			lbEmail.setHorizontalAlignment(SwingConstants.CENTER);
+			lbEmail.setFont(new Font("굴림", Font.BOLD, 20));
+			lbEmail.setOpaque(true); 
+			lbEmail.setBackground(Color.black);
+			lbEmail.setForeground(Color.WHITE);
+			lbEmail.setBounds(200, 500, 150, 40);
+			lbEmail.setVisible(false);
+			getContentPane().add(lbEmail);
+			
+			
+			
+			txtName = new JTextField();
+			txtName.setColumns(10);
+			txtName.setBounds(600, 200, 200, 40);
+			txtName.setVisible(false);
+			getContentPane().add(txtName);
+			
+			txtPassword = new JPasswordField();
+			txtPassword.setColumns(10);
+			txtPassword.setBounds(600, 300, 200, 40);
+			txtPassword.setVisible(false);
+			getContentPane().add(txtPassword);
+			
+			txtAge = new JTextField();
+			txtAge.setColumns(10);
+			txtAge.setBounds(600, 400, 200, 40);
+			txtAge.setVisible(false);
+			getContentPane().add(txtAge);
+			
+			txtEmail = new JTextField();
+			txtEmail.setColumns(10);
+			txtEmail.setBounds(600, 500, 200, 40);
+			txtEmail.setVisible(false);
+			getContentPane().add(txtEmail);
+			
+			//회원가입신청버튼
+			signUpInsertButton.setVisible(false);
+			signUpInsertButton.setBounds(200, 600, 400, 100);
+			signUpInsertButton.setBorderPainted(false);
+			signUpInsertButton.setContentAreaFilled(false);
+			signUpInsertButton.setFocusPainted(false);  // Jbutton기본형식해제
+			signUpInsertButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					signUpInsertButton.setIcon(signUpInsertButtonEntered);
+					signUpInsertButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+					Music buttonEnteredMusic = new Music("buttonEnteredMusic.mp3",false);
+					buttonEnteredMusic.start();
+				}
+				@Override
+				public void mouseExited(MouseEvent e ) {
+					signUpInsertButton.setIcon(signUpInsertButtonBasic);
+					signUpInsertButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					
+				}
+				@Override
+				public void mousePressed(MouseEvent e) {
+					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
+					buttonPressedMusic.start();
+					
+					//가입신청 구현해서 넣기
+					insertSignUp();
 				}
 			});
-			add(signUpButton);
+			getContentPane().add(signUpInsertButton);
+			
+			
+			//회원가입취소
+			signUpCancleButton.setVisible(false);
+			signUpCancleButton.setBounds(700, 600, 400, 100);
+			signUpCancleButton.setBorderPainted(false);
+			signUpCancleButton.setContentAreaFilled(false);
+			signUpCancleButton.setFocusPainted(false);  // Jbutton기본형식해제
+			signUpCancleButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					signUpCancleButton.setIcon(signUpCancleButtonEntered);
+					signUpCancleButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+					Music buttonEnteredMusic = new Music("buttonEnteredMusic.mp3",false);
+					buttonEnteredMusic.start();
+				}
+				@Override
+				public void mouseExited(MouseEvent e ) {
+					signUpCancleButton.setIcon(signUpCancleButtonBasic);
+					signUpCancleButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					
+				}
+				@Override
+				public void mousePressed(MouseEvent e) {
+					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
+					buttonPressedMusic.start();
+					
+					//취소 구현해서 넣기
+					cancleSignUp();
+				}
+			});
+			getContentPane().add(signUpCancleButton);
+			
 			
 		//로그인버튼
 			loginButton.setBounds(40, 575, 400, 100);
@@ -251,11 +399,11 @@ public class DynamicBeat extends JFrame{
 				public void mousePressed(MouseEvent e) {
 					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
 					buttonPressedMusic.start();
-					introMusic.close();
+					
 					//로그인창 구현해서 넣기
 				}
 			});
-			add(loginButton);
+			getContentPane().add(loginButton);
 			
 		//랭킹버튼
 			rankingButton.setBounds(700, 575, 400, 100);
@@ -280,11 +428,11 @@ public class DynamicBeat extends JFrame{
 				public void mousePressed(MouseEvent e) {
 					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
 					buttonPressedMusic.start();
-					introMusic.close();
-					//로그인창 구현해서 넣기
+					//랭킹창 구현해서 넣기
+					
 				}
 			});
-			add(rankingButton);
+			getContentPane().add(rankingButton);
 			
 			
 			
@@ -319,7 +467,7 @@ public class DynamicBeat extends JFrame{
 					selectLeft();
 				}
 			});
-			add(leftButton);
+			getContentPane().add(leftButton);
 			
 			//right버튼
 			rightButton.setVisible(false);
@@ -349,7 +497,7 @@ public class DynamicBeat extends JFrame{
 					selectRight();
 				}
 			});
-			add(rightButton);
+			getContentPane().add(rightButton);
 			
 			//easy버튼
 			easyButton.setVisible(false);
@@ -380,7 +528,7 @@ public class DynamicBeat extends JFrame{
 					
 				}
 			});
-			add(easyButton);
+			getContentPane().add(easyButton);
 			
 			//hard버튼
 			hardButton.setVisible(false);
@@ -410,7 +558,7 @@ public class DynamicBeat extends JFrame{
 					gameStart(nowselected, "Hard");
 				}
 			});
-			add(hardButton);
+			getContentPane().add(hardButton);
 			
 			//back버튼
 			backButton.setVisible(false);
@@ -441,7 +589,7 @@ public class DynamicBeat extends JFrame{
 					
 				}
 			});
-			add(backButton);
+			getContentPane().add(backButton);
 			
 			
 		
@@ -463,7 +611,7 @@ public class DynamicBeat extends JFrame{
 				setLocation(x - mouseX, y - mouseY);
 			}
 		});
-		add(menuBar);
+		getContentPane().add(menuBar);
 		
 
 
@@ -551,7 +699,7 @@ public class DynamicBeat extends JFrame{
 		background = new ImageIcon(Main.class.getClassLoader().getResource("./images/" +trackList.get(nowSelected).getGameImage())).getImage();
 		backButton.setVisible(true);
 		isGameScreen = true;
-		game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic());
+		game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic(),ID);
 		game.start();
 		setFocusable(true);
 		}
@@ -570,6 +718,87 @@ public class DynamicBeat extends JFrame{
 		isGameScreen = false;
 		game.close();
 	}
+	
+	private void SelectSignUp() {
+		startButton.setVisible(false);
+		quitButton.setVisible(false);
+		signUpButton.setVisible(false);
+		loginButton.setVisible(false);
+		rankingButton.setVisible(false);
+		signUpScreenOn();
+		
 
+
+		
+	}
+	private void insertSignUp() {
+		idDTO = new IdDTO();
+		String id = txtName.getText(); 
+		String password = new String(txtPassword.getPassword());
+		String email = txtEmail.getText();
+		int age = Integer.parseInt(txtAge.getText());
+		//service 연결해서 정규식체크하고
+		DynamicService dService = new DynamicService();
+		if(!dService.checkID(id)) {
+			JOptionPane.showMessageDialog(null, "id중복");
+		}
+
+		else if(!dService.checkPwd(password)) {
+			JOptionPane.showMessageDialog(null, "비밀번호는 6~20글자만가능합니다");
+		}
+		else if(age<15) {
+			JOptionPane.showMessageDialog(null, "15세이상만가입가능합니다");
+		}else if(!dService.checkAge(age)) {
+			JOptionPane.showMessageDialog(null, "나이를 다시 입력해 주세요");
+		}else if(!dService.checkEmail(email)) {
+			JOptionPane.showMessageDialog(null, "이메일주소를 다시 입력해 주세요");
+		}else {
+			int res=0;
+			idDTO.setId(id);
+			idDTO.setPassword(password);
+			idDTO.setAge(age);
+			idDTO.setEmail(email);
+		//service에서 dao연결해서 회원가입 ㄱ
+			res = dService.setSignUp(idDTO);
+			if(res==0) JOptionPane.showMessageDialog(null, "가입성공 로그인하세요");
+			if(res==1)JOptionPane.showMessageDialog(null, "가입실패했습니다.");
+			cancleSignUp();
+		}
+	}
+		
+	
+	private void cancleSignUp() {
+		signUpScreenOff();
+		startButton.setVisible(true);
+		quitButton.setVisible(true);
+		signUpButton.setVisible(true);
+		loginButton.setVisible(true);
+		rankingButton.setVisible(true);
+	}
+	
+	private void signUpScreenOff() {
+		lbID.setVisible(false);
+		lbAge.setVisible(false);
+		lbPassword.setVisible(false);
+		lbEmail.setVisible(false);
+		txtName.setVisible(false);
+		txtPassword.setVisible(false);
+		txtAge.setVisible(false);
+		txtEmail.setVisible(false);
+		signUpInsertButton.setVisible(false);
+		signUpCancleButton.setVisible(false);
+	}
+	private void signUpScreenOn() {
+		lbID.setVisible(true);
+		lbAge.setVisible(true);
+		lbPassword.setVisible(true);
+		lbEmail.setVisible(true);
+		txtName.setVisible(true);
+		txtPassword.setVisible(true);
+		txtAge.setVisible(true);
+		txtEmail.setVisible(true);
+		signUpInsertButton.setVisible(true);
+		signUpCancleButton.setVisible(true);
+	}
 }
 

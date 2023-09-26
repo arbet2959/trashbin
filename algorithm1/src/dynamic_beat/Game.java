@@ -32,13 +32,32 @@ public class Game extends Thread{
 	private String difficulty;
 	private String musicTitle;
 	private Music gameMusic;
+	private String ID;
+	private int score=0;
 	
+	private int perfect=0;
+	private int great=0;
+	private int good=0;
+	private int bad=0;
+	private int early=0;
+	private int late=0;
+	private int miss=0;
+	PlayRecordDTO prDTO;
 	List<Note> noteList = new ArrayList<Note>();
 	
+	public Game(String titleName, String difficulty, String musicTitle, String ID) {
+		this.titleName = titleName;
+		this.difficulty = difficulty;
+		this.musicTitle = musicTitle;
+		this.ID = ID;
+		gameMusic = new Music(this.musicTitle, false);
+	}
+	//비로그인시...실행 삭제할수도잇음
 	public Game(String titleName, String difficulty, String musicTitle) {
 		this.titleName = titleName;
 		this.difficulty = difficulty;
 		this.musicTitle = musicTitle;
+		
 		gameMusic = new Music(this.musicTitle, false);
 		
 	}
@@ -158,8 +177,19 @@ public class Game extends Thread{
 	public void releaseL() {
 		noteRouteLImage = new ImageIcon(Main.class.getClassLoader().getResource("./images/noteRoute.png")).getImage();
 	}
-	
+	//뒤로가기버튼시사용
 	public void close() {
+		gameMusic.close();
+		this.interrupt();
+	}
+	//정상종료시 사용할 close함수
+	public void close2() {
+		score = calcScore();
+		prDTO = new PlayRecordDTO();
+		prDTO.setID(ID);
+		
+		//화면에 score보여주기? 선택
+		//dao호출해서 score 데이터입력 필수
 		gameMusic.close();
 		this.interrupt();
 	}
@@ -305,17 +335,39 @@ public class Game extends Thread{
 	public void judgeEvent(String judge) {
 		if(!judge.equals("None"))
 			blueFlareImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/blueflare.png")).getImage();
-		if(judge.equals("Miss"))
+		if(judge.equals("Miss")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/miss.png")).getImage();
-		if(judge.equals("Late"))
+			miss++;
+		}
+		if(judge.equals("Late")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/late.png")).getImage();
-		if(judge.equals("Good"))
+			late++;
+			bad++;
+		}
+		if(judge.equals("Good")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/good.png")).getImage();
-		if(judge.equals("Great"))
+			good++;
+		}
+		if(judge.equals("Great")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Great.png")).getImage();
-		if(judge.equals("Perfect"))
+			great++;
+		}
+		if(judge.equals("Perfect")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Perfect.png")).getImage();
-		if(judge.equals("Early"))
+			perfect++;
+		}
+		if(judge.equals("Early")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Early.png")).getImage();
+			early++;
+			bad++;
+		}
+	}
+	
+	
+
+
+	private int calcScore() {
+		score = perfect*23+great*17+good*13+bad*7+miss*(-1);
+		return score;
 	}
 }

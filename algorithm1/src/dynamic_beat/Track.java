@@ -1,11 +1,11 @@
 package dynamic_beat;
 
 public class Track {
-	private String titleImage; //시작이전 제목파일
-	private String startImage;//시작이전 표지파일
-	private String gameImage;//시작후 표지
-	private String startMusic;//시작전 음악파일
-	private String gameMusic;//시작후 음악파일
+	private String titleImage; //시작이전 제목이미지
+	private String startImage;//시작이전 표지이미지
+	private String gameImage;//시작후 표지이미지
+	private String startMusic;//시작전 음악파일명
+	private String gameMusic;//시작후 음악파일명
 	private String titleName;//곡제목
 	
 	

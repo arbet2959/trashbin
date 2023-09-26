@@ -41,12 +41,12 @@ public class Music extends Thread {
 	 @Override
 	 public void run() {
 		 try {
-			do {
-				player.play();
-				fis = new FileInputStream(file);
-				bis = new BufferedInputStream(fis);
-				player = new Player(bis);
-			} while(isLoop);
+			 do {
+					player.play();
+					fis = new FileInputStream(file);
+					bis = new BufferedInputStream(fis);
+					player = new Player(bis);
+			 } while(isLoop);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}	
