@@ -10,6 +10,6 @@ create table dynamicUser(
 );
 
 desc dynamicUser;
-
-insert into dynamicUser values(admin,1234,32,'wlsl3472@navar.com',true,true);
-select * from dynamicUser;
+drop table dynamicUser;
+insert into dynamicUser values('admin',1234,32,'wlsl3472@naver.com',true,true);
+select * from dynamicUser where id = 'wlsl9411';

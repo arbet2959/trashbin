@@ -69,26 +69,26 @@ private String sql;
 	}
 
 	//ID로검색
-	public IdDTO getSearchId(String id) {
-				idDTO = new IdDTO();
+	public IdDTO getSearchId(IdDTO dto) {
+				
 		sql = "select * from dynamicUser where id = ?";
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
+			pstmt.setString(1, dto.getId());
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				idDTO.setId(rs.getString("id"));
-//				idDTO.setPassword(rs.getString("password"));
-				idDTO.setAge(rs.getInt("age"));
-				idDTO.setEmail(rs.getString("email"));
+				dto.setId(rs.getString("id"));
+				dto.setPassword(rs.getString("password"));
+				dto.setAge(rs.getInt("age"));
+				dto.setEmail(rs.getString("email"));
 			}
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}	finally {
 			rsClose();
 		}
-		return idDTO;
+		return dto;
 	}
 
 	public int setSignUp(IdDTO idDTO) {
@@ -97,7 +97,7 @@ private String sql;
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, idDTO.getId());
-			pstmt.setInt(2, idDTO.getAge());
+			pstmt.setString(2, idDTO.getPassword());
 			pstmt.setInt(3, idDTO.getAge());
 			pstmt.setString(4, idDTO.getEmail());
 			res = pstmt.executeUpdate();

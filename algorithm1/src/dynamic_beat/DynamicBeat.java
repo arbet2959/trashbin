@@ -75,19 +75,21 @@ public class DynamicBeat extends JFrame{
 	
 	private Music introMusic = new Music("introMusic.mp3",true);
 	
-	private JLabel lbID,lbPassword,lbAge,lbEmail;
-	private JTextField txtName, txtAge, txtEmail;
-	private JPasswordField txtPassword;
-	
+	private JLabel lbID,lbPassword,lbAge,lbEmail,lbLoginID, lbLoginPassword;
+	private JTextField txtId, txtAge, txtEmail,txtLoginId;
+	private JPasswordField txtPassword,txtLoginPassword;
+
 	private int mouseX, mouseY;
 	
 	private boolean isMainScreen = false;
 	private boolean isGameScreen = false;
+	private boolean isLoginScreen = false;
 	List<Track> trackList = new ArrayList<Track>();
 	private Music selectedMusic;
 	private int nowselected = 0;
 	private IdDTO idDTO;
-	
+	private DynamicService dService;
+	private DAO dao;
 	public static Game game;
 	public static String ID;
 	
@@ -255,27 +257,26 @@ public class DynamicBeat extends JFrame{
 			lbID.setVisible(false);
 			getContentPane().add(lbID);
 			
-			lbAge = new JLabel("나 이");
-			lbAge.setHorizontalAlignment(SwingConstants.CENTER);
-			lbAge.setFont(new Font("굴림", Font.BOLD, 20));
-			lbAge.setOpaque(true); 
-			lbAge.setBackground(Color.black);
-			lbAge.setForeground(Color.WHITE);
-			lbAge.setBounds(200, 300, 150, 40);
-			lbAge.setVisible(false);
-			getContentPane().add(lbAge);
-		
-			
 			lbPassword = new JLabel("비밀번호");
 			lbPassword.setHorizontalAlignment(SwingConstants.CENTER);
 			lbPassword.setFont(new Font("굴림", Font.BOLD, 20));
 			lbPassword.setOpaque(true); 
 			lbPassword.setBackground(Color.black);
 			lbPassword.setForeground(Color.WHITE);
-			lbPassword.setBounds(200, 400, 150, 40);
+			lbPassword.setBounds(200, 300, 150, 40);
 			lbPassword.setVisible(false);
 			getContentPane().add(lbPassword);
 			
+			lbAge = new JLabel("나 이");
+			lbAge.setHorizontalAlignment(SwingConstants.CENTER);
+			lbAge.setFont(new Font("굴림", Font.BOLD, 20));
+			lbAge.setOpaque(true); 
+			lbAge.setBackground(Color.black);
+			lbAge.setForeground(Color.WHITE);
+			lbAge.setBounds(200, 400, 150, 40);
+			lbAge.setVisible(false);
+			getContentPane().add(lbAge);
+				
 			lbEmail = new JLabel("이메일");
 			lbEmail.setHorizontalAlignment(SwingConstants.CENTER);
 			lbEmail.setFont(new Font("굴림", Font.BOLD, 20));
@@ -288,11 +289,11 @@ public class DynamicBeat extends JFrame{
 			
 			
 			
-			txtName = new JTextField();
-			txtName.setColumns(10);
-			txtName.setBounds(600, 200, 200, 40);
-			txtName.setVisible(false);
-			getContentPane().add(txtName);
+			txtId = new JTextField();
+			txtId.setColumns(10);
+			txtId.setBounds(600, 200, 200, 40);
+			txtId.setVisible(false);
+			getContentPane().add(txtId);
 			
 			txtPassword = new JPasswordField();
 			txtPassword.setColumns(10);
@@ -344,7 +345,7 @@ public class DynamicBeat extends JFrame{
 			getContentPane().add(signUpInsertButton);
 			
 			
-			//회원가입취소
+			//회원가입취소          +로그인취소
 			signUpCancleButton.setVisible(false);
 			signUpCancleButton.setBounds(700, 600, 400, 100);
 			signUpCancleButton.setBorderPainted(false);
@@ -376,6 +377,10 @@ public class DynamicBeat extends JFrame{
 			getContentPane().add(signUpCancleButton);
 			
 			
+			
+			
+			
+			
 		//로그인버튼
 			loginButton.setBounds(40, 575, 400, 100);
 			loginButton.setBorderPainted(false);
@@ -401,9 +406,76 @@ public class DynamicBeat extends JFrame{
 					buttonPressedMusic.start();
 					
 					//로그인창 구현해서 넣기
+					if(!isLoginScreen) {
+						insertLoginScreen();
+						isLoginScreen=true;
+					}else	if(isLoginScreen) {
+						String id ="";
+						String password="";
+						dService = new DynamicService();
+						id = txtLoginId.getText();
+						password =new String(txtLoginPassword.getPassword());
+						if(id.equals("")) {
+							JOptionPane.showMessageDialog(null, "아이디를 입력해주세요.");
+						}else if(password.equals("")) {
+							JOptionPane.showMessageDialog(null, "비밀번호를 입력해주세요.");
+						}else {
+							int res = dService.insertLogin(id,password);
+							if(res == 1) {
+								JOptionPane.showMessageDialog(null, "없는 아이디 입니다.");
+							}
+							if(res == 2) {
+								JOptionPane.showMessageDialog(null, "비밀번호 오류입니다.");
+							}
+							if(res == 3) {
+								cancleSignUp();
+								JOptionPane.showMessageDialog(null, id+"님 로그인했습니다");
+								isLoginScreen=false;
+							}
+						}
+					}
+					
 				}
+
 			});
 			getContentPane().add(loginButton);
+			
+			lbLoginID = new JLabel("아이디");
+			lbLoginID.setHorizontalAlignment(SwingConstants.CENTER);
+			lbLoginID.setOpaque(true); 
+			lbLoginID.setBackground(Color.black);
+			lbLoginID.setForeground(Color.WHITE);
+			lbLoginID.setFont(new Font("굴림", Font.BOLD, 20));
+			lbLoginID.setBounds(400, 300, 150, 40);
+			lbLoginID.setVisible(false);
+			getContentPane().add(lbLoginID);
+			
+			lbLoginPassword = new JLabel("비밀번호");
+			lbLoginPassword.setHorizontalAlignment(SwingConstants.CENTER);
+			lbLoginPassword.setFont(new Font("굴림", Font.BOLD, 20));
+			lbLoginPassword.setOpaque(true); 
+			lbLoginPassword.setBackground(Color.black);
+			lbLoginPassword.setForeground(Color.WHITE);
+			lbLoginPassword.setBounds(400, 400, 150, 40);
+			lbLoginPassword.setVisible(false);
+			getContentPane().add(lbLoginPassword);
+	
+
+			
+			txtLoginId = new JTextField();
+			txtLoginId.setColumns(10);
+			txtLoginId.setBounds(650, 300, 200, 40);
+			txtLoginId.setVisible(false);
+			getContentPane().add(txtLoginId);
+			
+			txtLoginPassword = new JPasswordField();
+			txtLoginPassword.setColumns(10);
+			txtLoginPassword.setBounds(650, 400, 200, 40);
+			txtLoginPassword.setVisible(false);
+			getContentPane().add(txtLoginPassword);
+			
+			
+			
 			
 		//랭킹버튼
 			rankingButton.setBounds(700, 575, 400, 100);
@@ -585,6 +657,7 @@ public class DynamicBeat extends JFrame{
 					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
 					buttonPressedMusic.start();
 				//back버튼이벤트
+					
 					backMain();
 					
 				}
@@ -613,9 +686,6 @@ public class DynamicBeat extends JFrame{
 		});
 		getContentPane().add(menuBar);
 		
-
-
-	
 
 	}	
 	
@@ -732,43 +802,52 @@ public class DynamicBeat extends JFrame{
 		
 	}
 	private void insertSignUp() {
-		idDTO = new IdDTO();
-		String id = txtName.getText(); 
+		String id = txtId.getText(); 
 		String password = new String(txtPassword.getPassword());
 		String email = txtEmail.getText();
-		int age = Integer.parseInt(txtAge.getText());
+		String age = txtAge.getText();
 		//service 연결해서 정규식체크하고
-		DynamicService dService = new DynamicService();
+		dService = new DynamicService();
 		if(!dService.checkID(id)) {
 			JOptionPane.showMessageDialog(null, "id중복");
-		}
-
-		else if(!dService.checkPwd(password)) {
+			signUpScreenOn();
+		}else if(!dService.checkPwd(password)) {
 			JOptionPane.showMessageDialog(null, "비밀번호는 6~20글자만가능합니다");
-		}
-		else if(age<15) {
+			signUpScreenOn();
+		}else if(Integer.parseInt(age)<15) {
 			JOptionPane.showMessageDialog(null, "15세이상만가입가능합니다");
-		}else if(!dService.checkAge(age)) {
+			signUpScreenOn();
+		}else if(!dService.checkAge(Integer.parseInt(age))) {
 			JOptionPane.showMessageDialog(null, "나이를 다시 입력해 주세요");
+			signUpScreenOn();
 		}else if(!dService.checkEmail(email)) {
 			JOptionPane.showMessageDialog(null, "이메일주소를 다시 입력해 주세요");
-		}else {
+			signUpScreenOn();
+		}else	{
 			int res=0;
+			idDTO = new IdDTO();
 			idDTO.setId(id);
 			idDTO.setPassword(password);
-			idDTO.setAge(age);
+			idDTO.setAge(Integer.parseInt(age));
 			idDTO.setEmail(email);
 		//service에서 dao연결해서 회원가입 ㄱ
 			res = dService.setSignUp(idDTO);
-			if(res==0) JOptionPane.showMessageDialog(null, "가입성공 로그인하세요");
-			if(res==1)JOptionPane.showMessageDialog(null, "가입실패했습니다.");
-			cancleSignUp();
-		}
+			if(res==0) JOptionPane.showMessageDialog(null, "가입실패했습니다."); cancleSignUp();
+			if(res==1) JOptionPane.showMessageDialog(null, "가입성공 로그인하세요"); cancleSignUp();
+		}	
 	}
 		
 	
 	private void cancleSignUp() {
 		signUpScreenOff();
+	
+		
+		lbLoginID.setVisible(false);
+		lbLoginPassword.setVisible(false);
+		txtLoginId.setVisible(false);
+		txtLoginPassword.setVisible(false);
+		isLoginScreen=false;
+		
 		startButton.setVisible(true);
 		quitButton.setVisible(true);
 		signUpButton.setVisible(true);
@@ -781,7 +860,7 @@ public class DynamicBeat extends JFrame{
 		lbAge.setVisible(false);
 		lbPassword.setVisible(false);
 		lbEmail.setVisible(false);
-		txtName.setVisible(false);
+		txtId.setVisible(false);
 		txtPassword.setVisible(false);
 		txtAge.setVisible(false);
 		txtEmail.setVisible(false);
@@ -793,12 +872,23 @@ public class DynamicBeat extends JFrame{
 		lbAge.setVisible(true);
 		lbPassword.setVisible(true);
 		lbEmail.setVisible(true);
-		txtName.setVisible(true);
+		txtId.setVisible(true);
 		txtPassword.setVisible(true);
 		txtAge.setVisible(true);
 		txtEmail.setVisible(true);
 		signUpInsertButton.setVisible(true);
 		signUpCancleButton.setVisible(true);
+	}
+	private void insertLoginScreen() {
+		startButton.setVisible(false);
+		quitButton.setVisible(false);
+		signUpButton.setVisible(false);
+		lbLoginID.setVisible(true);
+		lbLoginPassword.setVisible(true);
+		txtLoginId.setVisible(true);
+		txtLoginPassword.setVisible(true);
+		signUpCancleButton.setVisible(true);
+		rankingButton.setVisible(false);
 	}
 }
 

@@ -4,22 +4,24 @@ import java.util.regex.Pattern;
 
 public class DynamicService {
 
-	DAO dao	=DAO.getInstance();;
+	DAO dao	=DAO.getInstance();
 	IdDTO dto;
 	int res=0;
 	public boolean checkID(String id) {
-			dto=dao.getSearchId(id);
-			if(dto.getId()!=null)
-				return true;
-			else 
-				return false;
+		dto = new IdDTO();
+		dto.setId(id);
+		dto=dao.getSearchId(dto);
+		if(dto.getId()!=null)
+			return false;
+		else 
+			return true;
 	}
 	public boolean checkPwd(String password) {
 		String regexPassword = "^[\\w~!@#$%^&*()\\-=+\\[\\]{};':\",./<>?]{6,20}$";
 		return Pattern.matches(regexPassword, password);
 	}
 	public boolean checkAge(int age) {
-		String regexAge= "^[\\w~!@#$%^&*()\\-=+\\[\\]{};':\",./<>?]{6,20}$";
+		String regexAge= "^[\\d]{2,3}$";
 		String age2 = age+"";
 		return Pattern.matches(regexAge, age2);
 		
@@ -31,6 +33,29 @@ public class DynamicService {
 	public int setSignUp(IdDTO idDTO) {
 		res=dao.setSignUp(idDTO);
 		return res;
+	}
+	
+	
+
+	public int insertLogin(String id, String password) {
+		
+		dto = new IdDTO();
+		dto.setId(id);
+		dto=dao.getSearchId(dto);
+		int res = 0;
+		if(!id.equals(dto.getId())) {
+			res = 1;
+			return res;
+		}else	if(!password.equals(dto.getPassword())) {
+			System.out.println(dto.getPassword());
+			res = 2;
+			return res;
+		}else {
+			DynamicBeat.ID = dto.getId();
+			res = 3;
+			return res;
+		}
+				
 	}
 
 

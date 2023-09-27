@@ -28,7 +28,7 @@ public class Music extends Thread {
 	 
 	 public int gettime() {
 		 if(player == null)
-			 return 0;
+			 return -1;
 		 return player.getPosition();
 	 }
 	 

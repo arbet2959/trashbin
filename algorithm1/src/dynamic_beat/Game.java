@@ -46,14 +46,17 @@ public class Game extends Thread{
 	List<Note> noteList = new ArrayList<Note>();
 	
 	public Game(String titleName, String difficulty, String musicTitle, String ID) {
+		super();
 		this.titleName = titleName;
 		this.difficulty = difficulty;
 		this.musicTitle = musicTitle;
 		this.ID = ID;
 		gameMusic = new Music(this.musicTitle, false);
 	}
-	//비로그인시...실행 삭제할수도잇음
+	
+	//비로그인시...실행 비로그인 게임진행 막으려면 삭제+DynamicBeat.ID가 null일때 조건으로 메세지출력
 	public Game(String titleName, String difficulty, String musicTitle) {
+		super();
 		this.titleName = titleName;
 		this.difficulty = difficulty;
 		this.musicTitle = musicTitle;
@@ -98,10 +101,10 @@ public class Game extends Thread{
 
 		g.setColor(Color.WHITE);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", Font.BOLD , 30));
 		g.drawString(titleName,20,702);
 		g.drawString(difficulty, 1190, 702);
+		
 		
 		g.setFont(new Font("Arial", Font.PLAIN , 26));
 		g.drawString("S", 270, 609);
@@ -114,11 +117,12 @@ public class Game extends Thread{
 		 
 		g.setColor(Color.LIGHT_GRAY);
 		g.setFont(new Font("Elephant", Font.PLAIN , 26));
-		g.drawString("000000", 565, 702);
+		g.drawString(calcScore()+"", 565, 702);
 		g.drawImage(blueFlareImage, 550 , 440, null);
 		g.drawImage(judgeImage, 460 , 420, null);
 		
 		
+	
 	}
 	
 	@Override
@@ -367,7 +371,7 @@ public class Game extends Thread{
 
 
 	private int calcScore() {
-		score = perfect*23+great*17+good*13+bad*7+miss*(-1);
+		score = perfect*23+great*17+good*13+bad*7;
 		return score;
 	}
 }
