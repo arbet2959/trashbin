@@ -31,7 +31,7 @@ private String sql;
 	}
 	
 	private Connection getConnection() {
-		String url = "jdbc:mysql://localhost:3306/javaProject";
+		String url = "jdbc:mysql://localhost:3306/javaProject3";
 		String user = "root";
 		String password = "1234";
 		try {
@@ -70,7 +70,7 @@ private String sql;
 
 	//ID로검색
 	public IdDTO getSearchId(IdDTO dto) {
-				
+		IdDTO dto2 = new IdDTO();
 		sql = "select * from dynamicUser where id = ?";
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -78,17 +78,17 @@ private String sql;
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				dto.setId(rs.getString("id"));
-				dto.setPassword(rs.getString("password"));
-				dto.setAge(rs.getInt("age"));
-				dto.setEmail(rs.getString("email"));
+				dto2.setId(rs.getString("id"));
+				dto2.setPassword(rs.getString("password"));
+				dto2.setAge(rs.getInt("age"));
+				dto2.setEmail(rs.getString("email"));
 			}
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}	finally {
 			rsClose();
 		}
-		return dto;
+		return dto2;
 	}
 
 	public int setSignUp(IdDTO idDTO) {

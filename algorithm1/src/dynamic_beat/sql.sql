@@ -11,5 +11,21 @@ create table dynamicUser(
 
 desc dynamicUser;
 drop table dynamicUser;
-insert into dynamicUser values('admin',1234,32,'wlsl3472@naver.com',true,true);
+insert into dynamicUser values('admin','1234',32,'wlsl3472@naver.com',true,true);
+select * from dynamicUser;
 select * from dynamicUser where id = 'wlsl9411';
+
+create table playRecord(
+	idx int auto_increment primary key,
+	id varchar(20) default 'logoutuser',
+	title varchar(50) not null,
+	playtime datetime default now(),
+	score int default 0
+);
+
+show tables;
+
+
+
+
+);

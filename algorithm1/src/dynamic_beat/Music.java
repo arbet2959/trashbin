@@ -38,11 +38,16 @@ public class Music extends Thread {
 		 this.interrupt();
 	 }
 	 
+	 public boolean isClosed() {
+		  return player.isComplete();
+	 }
+	 
 	 @Override
 	 public void run() {
 		 try {
 			 do {
 					player.play();
+					player.isComplete();
 					fis = new FileInputStream(file);
 					bis = new BufferedInputStream(fis);
 					player = new Player(bis);

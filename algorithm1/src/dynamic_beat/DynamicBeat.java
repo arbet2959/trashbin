@@ -89,7 +89,6 @@ public class DynamicBeat extends JFrame{
 	private int nowselected = 0;
 	private IdDTO idDTO;
 	private DynamicService dService;
-	private DAO dao;
 	public static Game game;
 	public static String ID;
 	
@@ -627,7 +626,9 @@ public class DynamicBeat extends JFrame{
 					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
 					buttonPressedMusic.start();
 				//난이도어려움버튼이벤트
+					
 					gameStart(nowselected, "Hard");
+					
 				}
 			});
 			getContentPane().add(hardButton);

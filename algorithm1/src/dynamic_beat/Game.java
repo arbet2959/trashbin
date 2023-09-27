@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +33,11 @@ public class Game extends Thread{
 	private String titleName;
 	private String difficulty;
 	private String musicTitle;
-	private Music gameMusic;
+	public static Music gameMusic;
 	private String ID;
 	private int score=0;
 	
+	private int combo=0;
 	private int perfect=0;
 	private int great=0;
 	private int good=0;
@@ -89,8 +92,6 @@ public class Game extends Thread{
 		
 		for(int i=0; i < noteList.size(); i++) {
 			Note note = noteList.get(i);
-			if(note.getY()> 620)
-				judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/miss.png")).getImage();
 			if(!note.isProceeded()) {
 				noteList.remove(i);
 				i--;
@@ -118,10 +119,13 @@ public class Game extends Thread{
 		g.setColor(Color.LIGHT_GRAY);
 		g.setFont(new Font("Elephant", Font.PLAIN , 26));
 		g.drawString(calcScore()+"", 565, 702);
+		g.setColor(Color.LIGHT_GRAY);
+		g.setFont(new Font("Elephant", Font.PLAIN , 40));
+		g.drawString(combo+"", 630, 380);
 		g.drawImage(blueFlareImage, 550 , 440, null);
 		g.drawImage(judgeImage, 460 , 420, null);
 		
-		
+
 	
 	}
 	
@@ -191,10 +195,13 @@ public class Game extends Thread{
 		score = calcScore();
 		prDTO = new PlayRecordDTO();
 		prDTO.setID(ID);
-		
-		//화면에 score보여주기? 선택
-		//dao호출해서 score 데이터입력 필수
-		gameMusic.close();
+		prDTO.setTitle(musicTitle);
+		prDTO.setPlayTime(ID);
+		String playtime=LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		prDTO.setPlayTime(playtime);
+		prDTO.setScore(score);
+		//dao호출해서 score 데이터입력
+		System.out.println("222222222222222222222");
 		this.interrupt();
 	}
 	
@@ -324,6 +331,8 @@ public class Game extends Thread{
 				}
 			}
 		}
+		
+		close2();
 	}
 	
 	public void judge(String input) {
@@ -342,28 +351,34 @@ public class Game extends Thread{
 		if(judge.equals("Miss")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/miss.png")).getImage();
 			miss++;
+			combo=0;
 		}
 		if(judge.equals("Late")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/late.png")).getImage();
 			late++;
 			bad++;
+			
 		}
 		if(judge.equals("Good")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/good.png")).getImage();
 			good++;
+			combo++;
 		}
 		if(judge.equals("Great")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Great.png")).getImage();
 			great++;
+			combo++;
 		}
 		if(judge.equals("Perfect")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Perfect.png")).getImage();
 			perfect++;
+			combo++;
 		}
 		if(judge.equals("Early")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Early.png")).getImage();
 			early++;
 			bad++;
+			
 		}
 	}
 	
@@ -371,7 +386,7 @@ public class Game extends Thread{
 
 
 	private int calcScore() {
-		score = perfect*23+great*17+good*13+bad*7;
+		score = perfect*23+great*17+good*13+bad*7+combo*10;
 		return score;
 	}
 }
