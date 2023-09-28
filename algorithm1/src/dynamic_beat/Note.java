@@ -42,10 +42,14 @@ public class Note extends Thread{
 	
 	public void drop() {
 		y += Main.NOTE_SPEED;
+<<<<<<< HEAD
 		if(y>650) {
 			DynamicBeat.game.judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/miss.png")).getImage();
 			DynamicBeat.game.plusMiss();
 			DynamicBeat.game.calcCombo(0);
+=======
+		if(y>630) {
+>>>>>>> branch 'main' of https://github.com/arbet2959/trashbin.git
 			close();
 		}
 	}

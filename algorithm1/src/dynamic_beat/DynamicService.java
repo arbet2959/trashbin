@@ -57,10 +57,13 @@ public class DynamicService {
 		}
 				
 	}
+<<<<<<< HEAD
 	public int setInsertScore(PlayRecordDTO prDTO) {
 		int res = dao.setInsertScore(prDTO);
 		return res;
 	}
+=======
+>>>>>>> branch 'main' of https://github.com/arbet2959/trashbin.git
 
 
 }

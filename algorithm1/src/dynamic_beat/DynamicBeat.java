@@ -640,6 +640,7 @@ public class DynamicBeat extends JFrame{
 				//난이도어려움버튼이벤트
 					
 					gameStart(nowselected, "Hard");
+<<<<<<< HEAD
 					Timer timer = new Timer();
 					TimerTask timerTask = new TimerTask() {
 						@Override
@@ -652,6 +653,9 @@ public class DynamicBeat extends JFrame{
 						}
 					};
 					timer.schedule(timerTask, trackList.get(nowselected).getPlayTime()+3000);
+=======
+					
+>>>>>>> branch 'main' of https://github.com/arbet2959/trashbin.git
 				}
 			});
 			getContentPane().add(hardButton);
@@ -681,6 +685,11 @@ public class DynamicBeat extends JFrame{
 					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
 					buttonPressedMusic.start();
 				//back버튼이벤트
+<<<<<<< HEAD
+=======
+					
+					backMain();
+>>>>>>> branch 'main' of https://github.com/arbet2959/trashbin.git
 					
 					backMain();
 					game.close();
