@@ -7,7 +7,10 @@ public class KeyListener extends KeyAdapter{
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(DynamicBeat.game == null) return;
+		if(DynamicBeat.game == null) {
+			System.out.println("123123");
+			return;
+		}
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_S:
 				DynamicBeat.game.pressS();

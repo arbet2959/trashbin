@@ -7,11 +7,13 @@ public class Track {
 	private String startMusic;//시작전 음악파일명
 	private String gameMusic;//시작후 음악파일명
 	private String titleName;//곡제목
+	private int playTime;
 	
 	
 	
 	
-	public Track(String titleImage, String startImage, String gameImage, String startMusic, String gameMusic, String titleName) {
+
+	public Track(String titleImage, String startImage, String gameImage, String startMusic, String gameMusic, String titleName, int playTime) {
 		super();
 		this.titleImage = titleImage;
 		this.startImage = startImage;
@@ -19,6 +21,7 @@ public class Track {
 		this.startMusic = startMusic;
 		this.gameMusic = gameMusic;
 		this.titleName = titleName;
+		this.playTime = playTime;
 	}
 	public String getTitleName() {
 		return titleName;
@@ -55,6 +58,13 @@ public class Track {
 	}
 	public void setGameMusic(String gameMusic) {
 		this.gameMusic = gameMusic;
+	}
+	
+	public int getPlayTime() {
+		return playTime;
+	}
+	public void setPlayTime(int playTime) {
+		this.playTime = playTime;
 	}
 	
 	

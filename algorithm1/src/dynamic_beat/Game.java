@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,35 +27,42 @@ public class Game extends Thread{
 	private Image noteRouteKImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/noteRoute.png")).getImage();
 	private Image noteRouteLImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/noteRoute.png")).getImage();
 	private Image blueFlareImage;
-	private Image judgeImage;
 	
 	
 	private String titleName;
 	private String difficulty;
 	private String musicTitle;
-	private Music gameMusic;
+	public static Music gameMusic;
 	private String ID;
 	private int score=0;
 	
+	private int combo=0;
 	private int perfect=0;
 	private int great=0;
 	private int good=0;
 	private int bad=0;
 	private int early=0;
 	private int late=0;
-	private int miss=0;
+	public  int miss=0;
+	public Image judgeImage;
+	
 	PlayRecordDTO prDTO;
+	Object block = new Object();
+	DynamicService dService;
 	List<Note> noteList = new ArrayList<Note>();
 	
 	public Game(String titleName, String difficulty, String musicTitle, String ID) {
+		
 		this.titleName = titleName;
 		this.difficulty = difficulty;
 		this.musicTitle = musicTitle;
 		this.ID = ID;
 		gameMusic = new Music(this.musicTitle, false);
 	}
-	//비로그인시...실행 삭제할수도잇음
+	
+	//비로그인시...실행 비로그인 게임진행 막으려면 삭제+DynamicBeat.ID가 null일때 조건으로 메세지출력
 	public Game(String titleName, String difficulty, String musicTitle) {
+		super();
 		this.titleName = titleName;
 		this.difficulty = difficulty;
 		this.musicTitle = musicTitle;
@@ -86,8 +95,6 @@ public class Game extends Thread{
 		
 		for(int i=0; i < noteList.size(); i++) {
 			Note note = noteList.get(i);
-			if(note.getY()> 620)
-				judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/miss.png")).getImage();
 			if(!note.isProceeded()) {
 				noteList.remove(i);
 				i--;
@@ -98,10 +105,10 @@ public class Game extends Thread{
 
 		g.setColor(Color.WHITE);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", Font.BOLD , 30));
 		g.drawString(titleName,20,702);
 		g.drawString(difficulty, 1190, 702);
+		
 		
 		g.setFont(new Font("Arial", Font.PLAIN , 26));
 		g.drawString("S", 270, 609);
@@ -114,11 +121,15 @@ public class Game extends Thread{
 		 
 		g.setColor(Color.LIGHT_GRAY);
 		g.setFont(new Font("Elephant", Font.PLAIN , 26));
-		g.drawString("000000", 565, 702);
+		g.drawString(calcScore()+"", 565, 702);
+		g.setColor(Color.LIGHT_GRAY);
+		g.setFont(new Font("Elephant", Font.PLAIN , 40));
+		g.drawString(combo+"", 630, 380);
 		g.drawImage(blueFlareImage, 550 , 440, null);
 		g.drawImage(judgeImage, 460 , 420, null);
 		
-		
+
+	
 	}
 	
 	@Override
@@ -180,19 +191,12 @@ public class Game extends Thread{
 	//뒤로가기버튼시사용
 	public void close() {
 		gameMusic.close();
-		this.interrupt();
+		while(Game.interrupted()) {
+			this.interrupt();
+		}
 	}
-	//정상종료시 사용할 close함수
-	public void close2() {
-		score = calcScore();
-		prDTO = new PlayRecordDTO();
-		prDTO.setID(ID);
-		
-		//화면에 score보여주기? 선택
-		//dao호출해서 score 데이터입력 필수
-		gameMusic.close();
-		this.interrupt();
-	}
+
+
 	
 	public void dropNotes(String titleName) {
 		Beat[] beats = null;
@@ -200,7 +204,7 @@ public class Game extends Thread{
 			if(difficulty.equals("Easy")) Main.NOTE_SPEED = 3;
 			if(difficulty.equals("Hard")) Main.NOTE_SPEED = 6;
 			int startTime = 4460 - Main.REACH_TIME*1000;
-			int gap = 125; //1/8초
+			int gap = 125; // 1/8초
 			beats = new Beat[] {
 					new Beat(startTime + gap * 1, "S"), new Beat(startTime + gap * 3, "D"),
 					new Beat(startTime + gap * 5, "S"), new Beat(startTime + gap * 7, "D"),
@@ -286,49 +290,57 @@ public class Game extends Thread{
 					new Beat(startTime + gap * 340, "Space")
 			};
 		
-		}else if(titleName.equals("Joakim Karud - Wild Flower")) {
+		}else if(titleName.equals("Joakim karud - Wild Flower")) {
 			if(difficulty.equals("Easy")) Main.NOTE_SPEED = 3;
 			if(difficulty.equals("Hard")) Main.NOTE_SPEED = 6;
-			int startTime = 4000;
+			int startTime = 4500;
 			beats = new Beat[] {
-					new Beat(startTime,"Space")
+					new Beat(startTime,"Space"),
+					new Beat(startTime+3000,"Space"),
+					new Beat(startTime+5000,"Space")
 			};
 		}else if(titleName.equals("Bendsound - Energy")) {
 			if(difficulty.equals("Easy")) Main.NOTE_SPEED = 3;
 			if(difficulty.equals("Hard")) Main.NOTE_SPEED = 6;
 			int startTime = 4000;
 			beats = new Beat[] {
-					new Beat(startTime,"Space")
+					new Beat(startTime,"Space"),
+					new Beat(startTime+3000,"Space"),
+					new Beat(startTime+5000,"Space")
 			};
 		}
 		int i =0;
 		gameMusic.start();
 		while(i < beats.length && !isInterrupted()) {
-			boolean dropped = false;
+//			boolean dropped = false;
 			if(beats[i].getTime() <= gameMusic.gettime()) {
 				Note note = new Note(beats[i].getNoteName());
 				note.start();
 				noteList.add(note);
 				i++;
-				dropped = true;
+//				dropped = true;
 			}
-			if(!dropped) {
-				try {
-					Thread.sleep(5);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+//			if(!dropped) {
+//				try {
+//					Thread.sleep(5);		
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
 		}
+		
+		
 	}
 	
 	public void judge(String input) {
 		for(int i=0; i< noteList.size();i++) {
 			Note note = noteList.get(i);
+			
 			if(input.equals(note.getNoteType())) {
 				judgeEvent(note.judge());
 				break;
 			}
+
 		}
 	}
 	
@@ -337,37 +349,68 @@ public class Game extends Thread{
 			blueFlareImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/blueflare.png")).getImage();
 		if(judge.equals("Miss")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/miss.png")).getImage();
-			miss++;
+			plusMiss();
+			calcCombo(0);
 		}
 		if(judge.equals("Late")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/late.png")).getImage();
 			late++;
 			bad++;
+			
 		}
 		if(judge.equals("Good")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/good.png")).getImage();
 			good++;
+			calcCombo(1);
 		}
 		if(judge.equals("Great")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Great.png")).getImage();
 			great++;
+			calcCombo(1);
 		}
 		if(judge.equals("Perfect")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Perfect.png")).getImage();
 			perfect++;
+			calcCombo(1);
 		}
 		if(judge.equals("Early")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Early.png")).getImage();
 			early++;
 			bad++;
+			
 		}
 	}
 	
-	
+	public synchronized void plusMiss() {
+		miss++;	
+	}
 
 
 	private int calcScore() {
-		score = perfect*23+great*17+good*13+bad*7+miss*(-1);
+		score = perfect*23+great*17+good*13+bad*7+combo*10;
 		return score;
+	}
+
+	public void calcCombo(int i) {
+		synchronized(block) {
+		if(i==0)this.combo = i;
+		else combo++;
+		}
+	}
+
+	public int setInsertScore() {
+		score = calcScore();
+		prDTO = new PlayRecordDTO();
+		
+		prDTO.setID(ID);
+		prDTO.setTitle(titleName);
+		prDTO.setDifficulty(difficulty);
+		String playtime=LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		prDTO.setPlayTime(playtime);
+		prDTO.setScore(score);
+		//dao호출해서 score 데이터입력
+		DynamicService dService = new DynamicService();
+		int res=dService.setInsertScore(prDTO);
+		return res;
 	}
 }

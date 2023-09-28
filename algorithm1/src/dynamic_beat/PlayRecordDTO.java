@@ -4,7 +4,9 @@ public class PlayRecordDTO {
 	int idx;
 	String ID;
 	String title;
+	String difficulty;
 	String playTime;
+	
 	int score;
 	
 	private String strYY;
@@ -55,10 +57,26 @@ public class PlayRecordDTO {
 	public void setPlayTime(String playTime) {
 		this.playTime = playTime;
 	}
+	public String getDifficulty() {
+		return difficulty;
+	}
+	public void setDifficulty(String difficulty) {
+		this.difficulty = difficulty;
+	}
 	public int getScore() {
 		return score;
 	}
 	public void setScore(int score) {
 		this.score = score;
 	}
+	@Override
+	public String toString() {
+		return "PlayRecordDTO [idx=" + idx + ", ID=" + ID + ", title=" + title + ", playTime=" + playTime
+				+ ", difficulty=" + difficulty + ", score=" + score + ", strYY=" + strYY + ", strMM=" + strMM
+				+ ", strDD=" + strDD + ", getStrYY()=" + getStrYY() + ", getStrMM()=" + getStrMM() + ", getStrDD()="
+				+ getStrDD() + ", getIdx()=" + getIdx() + ", getID()=" + getID() + ", getTitle()=" + getTitle()
+				+ ", getPlayTime()=" + getPlayTime() + ", getDifficulty()=" + getDifficulty() + ", getScore()="
+				+ getScore() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
+	} 
 }

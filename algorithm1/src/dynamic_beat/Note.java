@@ -42,7 +42,10 @@ public class Note extends Thread{
 	
 	public void drop() {
 		y += Main.NOTE_SPEED;
-		if(y>620) {
+		if(y>650) {
+			DynamicBeat.game.judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/miss.png")).getImage();
+			DynamicBeat.game.plusMiss();
+			DynamicBeat.game.calcCombo(0);
 			close();
 		}
 	}
@@ -67,7 +70,10 @@ public class Note extends Thread{
 	}
 	
 	public String judge() { // 580기준
-		if(y>=610) {
+		if(y>=630) {
+			close();
+			return "Miss";
+		}else if(y>=610) {
 			close();
 			return "Late";
 		}else if(y>=600) {
