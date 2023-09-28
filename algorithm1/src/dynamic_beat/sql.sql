@@ -16,7 +16,6 @@ select * from dynamicUser;
 select * from dynamicUser where id = 'wlsl9411';
 
 create table playRecord(
-<<<<<<< HEAD
 	idx int auto_increment primary key not null,
 	id varchar(20) default 'anonymousUser',
 	title varchar(50) not null,
@@ -32,18 +31,6 @@ ALTER TABLE `playRecord` MODIFY `difficulty` varchar(10) DEFAULT '';
 show tables;
 
 ;
-=======
-	idx int auto_increment primary key,
-	id varchar(20) default 'logoutuser',
-	title varchar(50) not null,
-	playtime datetime default now(),
-	score int default 0
-);
-
-show tables;
-
-
->>>>>>> branch 'main' of https://github.com/arbet2959/trashbin.git
 
 
 );

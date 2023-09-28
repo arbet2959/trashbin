@@ -52,11 +52,7 @@ public class Game extends Thread{
 	List<Note> noteList = new ArrayList<Note>();
 	
 	public Game(String titleName, String difficulty, String musicTitle, String ID) {
-<<<<<<< HEAD
 		
-=======
-		super();
->>>>>>> branch 'main' of https://github.com/arbet2959/trashbin.git
 		this.titleName = titleName;
 		this.difficulty = difficulty;
 		this.musicTitle = musicTitle;
@@ -199,25 +195,8 @@ public class Game extends Thread{
 			this.interrupt();
 		}
 	}
-<<<<<<< HEAD
 
 
-=======
-	//정상종료시 사용할 close함수
-	public void close2() {
-		score = calcScore();
-		prDTO = new PlayRecordDTO();
-		prDTO.setID(ID);
-		prDTO.setTitle(musicTitle);
-		prDTO.setPlayTime(ID);
-		String playtime=LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-		prDTO.setPlayTime(playtime);
-		prDTO.setScore(score);
-		//dao호출해서 score 데이터입력
-		System.out.println("222222222222222222222");
-		this.interrupt();
-	}
->>>>>>> branch 'main' of https://github.com/arbet2959/trashbin.git
 	
 	public void dropNotes(String titleName) {
 		Beat[] beats = null;
@@ -350,11 +329,7 @@ public class Game extends Thread{
 //			}
 		}
 		
-<<<<<<< HEAD
 		
-=======
-		close2();
->>>>>>> branch 'main' of https://github.com/arbet2959/trashbin.git
 	}
 	
 	public void judge(String input) {
@@ -374,13 +349,8 @@ public class Game extends Thread{
 			blueFlareImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/blueflare.png")).getImage();
 		if(judge.equals("Miss")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/miss.png")).getImage();
-<<<<<<< HEAD
 			plusMiss();
 			calcCombo(0);
-=======
-			miss++;
-			combo=0;
->>>>>>> branch 'main' of https://github.com/arbet2959/trashbin.git
 		}
 		if(judge.equals("Late")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/late.png")).getImage();
@@ -391,29 +361,17 @@ public class Game extends Thread{
 		if(judge.equals("Good")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/good.png")).getImage();
 			good++;
-<<<<<<< HEAD
 			calcCombo(1);
-=======
-			combo++;
->>>>>>> branch 'main' of https://github.com/arbet2959/trashbin.git
 		}
 		if(judge.equals("Great")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Great.png")).getImage();
 			great++;
-<<<<<<< HEAD
 			calcCombo(1);
-=======
-			combo++;
->>>>>>> branch 'main' of https://github.com/arbet2959/trashbin.git
 		}
 		if(judge.equals("Perfect")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Perfect.png")).getImage();
 			perfect++;
-<<<<<<< HEAD
 			calcCombo(1);
-=======
-			combo++;
->>>>>>> branch 'main' of https://github.com/arbet2959/trashbin.git
 		}
 		if(judge.equals("Early")) {
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/Early.png")).getImage();

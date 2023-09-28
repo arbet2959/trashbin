@@ -70,10 +70,7 @@ private String sql;
 
 	//ID로검색
 	public IdDTO getSearchId(IdDTO dto) {
-<<<<<<< HEAD
 		conn = getConnection();
-=======
->>>>>>> branch 'main' of https://github.com/arbet2959/trashbin.git
 		IdDTO dto2 = new IdDTO();
 		sql = "select * from dynamicUser where id = ?";
 		try {
