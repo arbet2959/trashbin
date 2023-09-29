@@ -23,14 +23,12 @@ create table playRecord(
 	playtime datetime default now(),
 	score int default 0
 );
-insert into playRecord values(default,'anonymousUser','Joakim karud - Mighty Love','Hard',default,1800)
-drop table playRecord;
+insert into playRecord values(default,'wlsl9411','Joakim karud - Mighty Love','Easy',default,983);
+insert into playRecord values(default,'admin','Joakim karud - Wild Flower','Easy',default,2050);
+insert into playRecord values(default,'anonymousUser','Bensound - Energy','Easy',default,567);
+drop table playRecord
 desc playRecord;
 select * from playRecord;
 ALTER TABLE `playRecord` MODIFY `difficulty` varchar(10) DEFAULT '';
 show tables;
 
-;
-
-
-);

@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -14,8 +15,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -49,10 +52,17 @@ public class DynamicBeat extends JFrame{
 	private ImageIcon loginButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/loginButtonEntered.png"));
 	private ImageIcon rankingButtonBasic = new ImageIcon(Main.class.getClassLoader().getResource("./images/rankingButtonBasic.png"));
 	private ImageIcon rankingButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/rankingButtonEntered.png"));
+	
 	private ImageIcon signUpInsertButtonBasic = new ImageIcon(Main.class.getClassLoader().getResource("./images/signUpInsertButtonBasic.png"));
 	private ImageIcon signUpInsertButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/signUpInsertButtonEntered.png"));
 	private ImageIcon signUpCancleButtonBasic = new ImageIcon(Main.class.getClassLoader().getResource("./images/signUpCancleButtonBasic.png"));
 	private ImageIcon signUpCancleButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/signUpCancleButtonEntered.png"));
+	
+	private ImageIcon insertSearchButtonBasic = new ImageIcon(Main.class.getClassLoader().getResource("./images/InsertSearchButtonBasic.png"));
+	private ImageIcon insertSearchButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/InsertSearchButtonEntered.png"));
+	private ImageIcon rankingCancleButtonBasic = new ImageIcon(Main.class.getClassLoader().getResource("./images/rankingCancleButtonBasic.png"));
+	private ImageIcon rankingCancleButtonEntered = new ImageIcon(Main.class.getClassLoader().getResource("./images/rankingCancleButtonEntered.png"));
+	
 	
 	private Image background = new ImageIcon(Main.class.getClassLoader().getResource("./images/introBackground.jpg")).getImage();
 	private Image titleImage;
@@ -73,22 +83,30 @@ public class DynamicBeat extends JFrame{
 	private JButton signUpCancleButton = new JButton(signUpCancleButtonBasic);
 	private JButton loginButton = new JButton(loginButtonBasic);
 	private JButton rankingButton = new JButton(rankingButtonBasic);
+	private JButton insertSearchButton = new JButton(insertSearchButtonBasic);
+	private JButton rankingCancleButton = new JButton(rankingCancleButtonBasic);
 	
 	private Music introMusic = new Music("introMusic.mp3",true);
 	
 	private JLabel lbID,lbPassword,lbAge,lbEmail,lbLoginID, lbLoginPassword;
 	private JTextField txtId, txtAge, txtEmail,txtLoginId;
 	private JPasswordField txtPassword,txtLoginPassword;
-
+	private JComboBox cbTitle;
 	private int mouseX, mouseY;
 	
 	private boolean isMainScreen = false;
 	private boolean isGameScreen = false;
 	private boolean isLoginScreen = false;
+	private boolean isRanking = false;
 	List<Track> trackList = new ArrayList<Track>();
 	private Music selectedMusic;
 	private int nowselected = 0;
+	
+	private DAO dao;
 	private IdDTO idDTO;
+	private String rankTitle;
+	private PlayRecordDTO prDTO;
+	List<PlayRecordDTO> prDTOs;
 	private DynamicService dService;
 	public static Game game;
 	public static String ID="anonymousUser";
@@ -501,12 +519,79 @@ public class DynamicBeat extends JFrame{
 					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
 					buttonPressedMusic.start();
 					//랭킹창 구현해서 넣기
-					
+					rankingScreenOn();
 				}
 			});
 			getContentPane().add(rankingButton);
 			
+			String[] trackListTitle = new String[trackList.size()];
+			for(int i=0;i<trackList.size();i++)
+				trackListTitle[i] = trackList.get(i).getTitleName();
 			
+			cbTitle = new JComboBox();
+			cbTitle.setModel(new DefaultComboBoxModel(trackListTitle));
+			cbTitle.setBounds(900, 100, 250, 60);
+			cbTitle.setVisible(false);
+			getContentPane().add(cbTitle);
+			
+			insertSearchButton.setVisible(false);
+			insertSearchButton.setBounds(100, 600, 400, 100);
+			insertSearchButton.setBorderPainted(false);
+			insertSearchButton.setContentAreaFilled(false);
+			insertSearchButton.setFocusPainted(false);  // Jbutton기본형식해제
+			insertSearchButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					insertSearchButton.setIcon(insertSearchButtonEntered);
+					insertSearchButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+					Music buttonEnteredMusic = new Music("buttonEnteredMusic.mp3",false);
+					buttonEnteredMusic.start();
+				}
+				@Override
+				public void mouseExited(MouseEvent e ) {
+					insertSearchButton.setIcon(insertSearchButtonBasic);
+					insertSearchButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					
+				}
+				@Override
+				public void mousePressed(MouseEvent e) {
+					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
+					buttonPressedMusic.start();
+					insertRankSearch();
+					
+				}
+			});
+			getContentPane().add(insertSearchButton);
+			
+			rankingCancleButton.setVisible(false);
+			rankingCancleButton.setBounds(700, 600, 400, 100);
+			rankingCancleButton.setBorderPainted(false);
+			rankingCancleButton.setContentAreaFilled(false);
+			rankingCancleButton.setFocusPainted(false);  // Jbutton기본형식해제
+			rankingCancleButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					rankingCancleButton.setIcon(rankingCancleButtonEntered);
+					rankingCancleButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+					Music buttonEnteredMusic = new Music("buttonEnteredMusic.mp3",false);
+					buttonEnteredMusic.start();
+				}
+				@Override
+				public void mouseExited(MouseEvent e ) {
+					rankingCancleButton.setIcon(rankingCancleButtonBasic);
+					rankingCancleButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					
+				}
+				@Override
+				public void mousePressed(MouseEvent e) {
+					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3",false);
+					buttonPressedMusic.start();
+					
+					//취소 구현해서 넣기
+					rankingScreenOff();
+				}
+			});
+			getContentPane().add(rankingCancleButton);
 			
 			
 			
@@ -732,6 +817,26 @@ public class DynamicBeat extends JFrame{
 		if(isGameScreen){
 			game.screenDraw(g);
 		}
+		if(isRanking) {
+		g.setColor(Color.BLACK);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.setFont(new Font("Arial", Font.BOLD , 35));
+		g.drawString(rankTitle, 400, 150);
+		g.setFont(new Font("Arial", Font.BOLD , 25));
+		g.drawString("Rank",200,250);
+		g.drawString("ID",400,250);
+		g.drawString("DIFFICULT",600,250);
+		g.drawString("SCORE",800,250);
+		g.setFont(new Font("Arial", Font.BOLD , 20));
+		g.setColor(Color.green);
+		for(int i=0;i<prDTOs.size();i++) {
+			g.drawString(prDTOs.get(i).getIdx()+"", 200, 350+50*i);
+			g.drawString(prDTOs.get(i).getID(), 400, 350+50*i);
+			g.drawString(prDTOs.get(i).getDifficulty(), 600, 350+50*i);
+			g.drawString(prDTOs.get(i).getScore()+"", 800, 350+50*i);
+		}
+		
+	}
 		paintComponents(g); //JFrame'안'에 추가된 '컴포넌트'를 그려줌
 		try {
 			
@@ -914,5 +1019,37 @@ public class DynamicBeat extends JFrame{
 		signUpCancleButton.setVisible(true);
 		rankingButton.setVisible(false);
 	}
+	
+	private void rankingScreenOn() {
+		startButton.setVisible(false);
+		quitButton.setVisible(false);
+		signUpButton.setVisible(false);
+		loginButton.setVisible(false);
+		rankingButton.setVisible(false);
+		insertSearchButton.setVisible(true);
+		rankingCancleButton.setVisible(true);
+		cbTitle.setVisible(true);
+		
+	}
+	
+	private void rankingScreenOff() {
+		startButton.setVisible(true);
+		quitButton.setVisible(true);
+		signUpButton.setVisible(true);
+		loginButton.setVisible(true);
+		rankingButton.setVisible(true);
+		insertSearchButton.setVisible(false);
+		rankingCancleButton.setVisible(false);
+		cbTitle.setVisible(false);
+		isRanking = false;
+	}
+	
+	private void insertRankSearch() {
+		prDTOs = new ArrayList<PlayRecordDTO>();
+		dao = DAO.getInstance();
+		rankTitle=cbTitle.getSelectedItem().toString();
+		prDTOs=dao.getSearchRank(rankTitle);
+		isRanking = true;
+		
+	}
 }
-

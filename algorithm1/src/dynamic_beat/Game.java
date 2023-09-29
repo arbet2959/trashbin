@@ -61,15 +61,15 @@ public class Game extends Thread{
 	}
 	
 	//비로그인시...실행 비로그인 게임진행 막으려면 삭제+DynamicBeat.ID가 null일때 조건으로 메세지출력
-	public Game(String titleName, String difficulty, String musicTitle) {
-		super();
-		this.titleName = titleName;
-		this.difficulty = difficulty;
-		this.musicTitle = musicTitle;
-		
-		gameMusic = new Music(this.musicTitle, false);
-		
-	}
+//	public Game(String titleName, String difficulty, String musicTitle) {
+//		super();
+//		this.titleName = titleName;
+//		this.difficulty = difficulty;
+//		this.musicTitle = musicTitle;
+//		
+//		gameMusic = new Music(this.musicTitle, false);
+//		
+//	}
 	
 	public void screenDraw(Graphics2D g) {
 		
@@ -122,7 +122,7 @@ public class Game extends Thread{
 		g.setColor(Color.LIGHT_GRAY);
 		g.setFont(new Font("Elephant", Font.PLAIN , 26));
 		g.drawString(calcScore()+"", 565, 702);
-		g.setColor(Color.LIGHT_GRAY);
+		g.setColor(Color.WHITE);
 		g.setFont(new Font("Elephant", Font.PLAIN , 40));
 		g.drawString(combo+"", 630, 380);
 		g.drawImage(blueFlareImage, 550 , 440, null);
@@ -188,6 +188,7 @@ public class Game extends Thread{
 	public void releaseL() {
 		noteRouteLImage = new ImageIcon(Main.class.getClassLoader().getResource("./images/noteRoute.png")).getImage();
 	}
+	
 	//뒤로가기버튼시사용
 	public void close() {
 		gameMusic.close();
@@ -293,7 +294,7 @@ public class Game extends Thread{
 		}else if(titleName.equals("Joakim karud - Wild Flower")) {
 			if(difficulty.equals("Easy")) Main.NOTE_SPEED = 3;
 			if(difficulty.equals("Hard")) Main.NOTE_SPEED = 6;
-			int startTime = 4500;
+			int startTime = 4460 - Main.REACH_TIME*1000;
 			beats = new Beat[] {
 					new Beat(startTime,"Space"),
 					new Beat(startTime+3000,"Space"),
@@ -302,7 +303,7 @@ public class Game extends Thread{
 		}else if(titleName.equals("Bendsound - Energy")) {
 			if(difficulty.equals("Easy")) Main.NOTE_SPEED = 3;
 			if(difficulty.equals("Hard")) Main.NOTE_SPEED = 6;
-			int startTime = 4000;
+			int startTime = 1000 - Main.REACH_TIME*1000;
 			beats = new Beat[] {
 					new Beat(startTime,"Space"),
 					new Beat(startTime+3000,"Space"),
@@ -348,6 +349,7 @@ public class Game extends Thread{
 		if(!judge.equals("None"))
 			blueFlareImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/blueflare.png")).getImage();
 		if(judge.equals("Miss")) {
+//			System.out.println("111111111111111111111111111111111111");
 			judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/miss.png")).getImage();
 			plusMiss();
 			calcCombo(0);

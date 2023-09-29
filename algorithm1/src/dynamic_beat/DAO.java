@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -16,7 +18,8 @@ private PreparedStatement pstmt;
 private ResultSet rs;
 private IdDTO idDTO;
 private PlayRecordDTO prDTO;
-int res=0;
+private List<PlayRecordDTO> prDTOs;
+private int res=0;
 private String sql;
 	
 	private DAO() {
@@ -133,6 +136,37 @@ private String sql;
 		}
 		return res;
 		
+	}
+
+	public List<PlayRecordDTO> getSearchRank(String titleName) {
+		prDTOs = new ArrayList<PlayRecordDTO>();
+		conn = getConnection();
+
+		sql = "select (@rank:=@rank+1) as rank, id, difficulty, score "
+			+ "from playRecord,(select @rank:=0) as x "
+			+ "where title = ? "
+			+ "order by score desc limit 5";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, titleName);
+			
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				prDTO = new PlayRecordDTO();
+				prDTO.setIdx(rs.getInt("rank"));
+				prDTO.setID(rs.getString("id"));
+				prDTO.setDifficulty(rs.getString("difficulty"));
+				prDTO.setScore(rs.getInt("score"));
+				prDTOs.add(prDTO);
+			}
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}	finally {
+			rsClose();
+			connClose();
+		}
+		return prDTOs;
 	}
 
 	
