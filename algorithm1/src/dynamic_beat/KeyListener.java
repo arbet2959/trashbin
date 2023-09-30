@@ -44,6 +44,9 @@ public class KeyListener extends KeyAdapter{
 		
 	@Override
 	public void keyReleased(KeyEvent e) {
+		if(DynamicBeat.game == null) {
+			return;
+		}
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_S:
 				DynamicBeat.game.releaseS();

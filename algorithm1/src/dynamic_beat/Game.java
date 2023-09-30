@@ -37,13 +37,14 @@ public class Game extends Thread{
 	private int score=0;
 	
 	private int combo=0;
+	private int maxCombo=0;
 	private int perfect=0;
 	private int great=0;
 	private int good=0;
 	private int bad=0;
 	private int early=0;
 	private int late=0;
-	public  int miss=0;
+	private int miss=0;
 	public Image judgeImage;
 	
 	PlayRecordDTO prDTO;
@@ -58,6 +59,7 @@ public class Game extends Thread{
 		this.musicTitle = musicTitle;
 		this.ID = ID;
 		gameMusic = new Music(this.musicTitle, false);
+		
 	}
 	
 	//비로그인시...실행 비로그인 게임진행 막으려면 삭제+DynamicBeat.ID가 null일때 조건으로 메세지출력
@@ -389,14 +391,20 @@ public class Game extends Thread{
 
 
 	private int calcScore() {
-		score = perfect*23+great*17+good*13+bad*7+combo*10;
+		score = perfect*23+great*17+good*13+bad*7+maxCombo*10;
 		return score;
 	}
 
 	public void calcCombo(int i) {
-		synchronized(block) {
-		if(i==0)this.combo = i;
-		else combo++;
+		if(i!=0) {
+			if(combo>maxCombo) maxCombo = combo;
+			combo++;
+			return;
+		}
+		if(i==0) {
+			synchronized(block) {
+				this.combo = i;
+			}
 		}
 	}
 

@@ -902,6 +902,7 @@ public class DynamicBeat extends JFrame{
 		game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic(),ID);
 		game.start();
 		setFocusable(true);
+		requestFocus();
 		}
 	}
 	
