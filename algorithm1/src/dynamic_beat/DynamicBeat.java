@@ -809,7 +809,7 @@ public class DynamicBeat extends JFrame{
 		g.drawImage(screenImage,0,0,null);
 	}
 	public void screenDraw(Graphics2D g) {
-		g.drawImage(background,0,0,null); //단순한 이미지를 화면에출력
+		g.drawImage(background,0,0,null);
 		if(isMainScreen) {
 			g.drawImage(selectedImage, 340, 100, null);
 			g.drawImage(titleImage, 340 , 70 , null);
@@ -837,7 +837,7 @@ public class DynamicBeat extends JFrame{
 		}
 		
 	}
-		paintComponents(g); //JFrame'안'에 추가된 '컴포넌트'를 그려줌
+		paintComponents(g);
 		try {
 			
 			Thread.sleep(5);

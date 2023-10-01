@@ -62,16 +62,8 @@ public class Game extends Thread{
 		
 	}
 	
-	//비로그인시...실행 비로그인 게임진행 막으려면 삭제+DynamicBeat.ID가 null일때 조건으로 메세지출력
-//	public Game(String titleName, String difficulty, String musicTitle) {
-//		super();
-//		this.titleName = titleName;
-//		this.difficulty = difficulty;
-//		this.musicTitle = musicTitle;
-//		
-//		gameMusic = new Music(this.musicTitle, false);
-//		
-//	}
+	//비로그인시...실행 비로그인 게임진행 막으려면 삭제+DynamicBeat.ID가 익명일때 조건으로 메세지출력
+
 	
 	public void screenDraw(Graphics2D g) {
 		
