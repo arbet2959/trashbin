@@ -109,7 +109,7 @@ public class DynamicBeat extends JFrame{
 	List<PlayRecordDTO> prDTOs;
 	private DynamicService dService;
 	public static Game game;
-	public static String ID="anonymousUser";
+	public static String loginID="anonymousUser";
 	
 	public DynamicBeat() {
 		Track mightyLove = new Track("Mighty Love Title image.png", "Mighty Love Start image.png",
@@ -899,7 +899,7 @@ public class DynamicBeat extends JFrame{
 		background = new ImageIcon(Main.class.getClassLoader().getResource("./images/" +trackList.get(nowSelected).getGameImage())).getImage();
 		backButton.setVisible(true);
 		isGameScreen = true;
-		game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic(),ID);
+		game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic(),loginID);
 		game.start();
 		setFocusable(true);
 		requestFocus();

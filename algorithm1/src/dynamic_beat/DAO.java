@@ -39,7 +39,6 @@ private String sql;
 		String password = "1234";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			
 			conn = DriverManager.getConnection(url, user, password);
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버검색실패");

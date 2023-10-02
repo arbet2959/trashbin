@@ -24,6 +24,7 @@ create table playRecord(
 	score int default 0
 );
 insert into playRecord values(default,'wlsl9411','Joakim karud - Mighty Love','Easy',default,983);
+insert into playRecord values(default,'anonymousUser','Joakim karud - Mighty Love','Easy',default,537);
 insert into playRecord values(default,'admin','Joakim karud - Wild Flower','Easy',default,2050);
 insert into playRecord values(default,'anonymousUser','Bensound - Energy','Easy',default,567);
 drop table playRecord

@@ -46,17 +46,18 @@ public class DynamicService {
 		if(!id.equals(dto.getId())) {
 			res = 1;
 			return res;
-		}else	if(!password.equals(dto.getPassword())) {
+		}
+		if(!password.equals(dto.getPassword())) {
 			System.out.println(dto.getPassword());
 			res = 2;
 			return res;
-		}else {
-			DynamicBeat.ID = dto.getId();
-			res = 3;
-			return res;
 		}
-				
+		DynamicBeat.loginID = dto.getId();
+		res = 3;
+		return res;
 	}
+				
+	
 	public int setInsertScore(PlayRecordDTO prDTO) {
 		int res = dao.setInsertScore(prDTO);
 		return res;

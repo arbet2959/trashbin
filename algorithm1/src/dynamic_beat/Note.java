@@ -43,7 +43,6 @@ public class Note extends Thread{
 	public void drop() {
 		y += Main.NOTE_SPEED;
 		if(y>650) {
-//			System.out.println("22222222222222222222222222222");
 			DynamicBeat.game.judgeImage= new ImageIcon(Main.class.getClassLoader().getResource("./images/miss.png")).getImage();
 			DynamicBeat.game.plusMiss();
 			DynamicBeat.game.calcCombo(0);
