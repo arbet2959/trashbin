@@ -375,6 +375,9 @@ public class Game extends Thread{
 			int startTime = 4460 - Main.REACH_TIME*1000;
 			int gap = 125;
 			beats = new Beat[] {
+					new Beat(startTime + gap * 1, "S"), new Beat(startTime + gap * 3, "S"),
+					new Beat(startTime + gap * 5, "S"), new Beat(startTime + gap * 7, "D"),
+					new Beat(startTime + gap * 9, "S"), new Beat(startTime + gap * 11, "D"),
 					new Beat(startTime + gap * 27, "K"), new Beat(startTime + gap * 30, "F"),
 					new Beat(startTime + gap * 32, "K"), new Beat(startTime + gap * 36, "D"),
 					new Beat(startTime + gap * 39, "K"), new Beat(startTime + gap * 42, "F"),
@@ -474,10 +477,10 @@ public class Game extends Thread{
 					new Beat(startTime + gap * 700, "F"), new Beat(startTime + gap * 703, "L"),
 					new Beat(startTime + gap * 706, "J")
 			};
-		}else if(titleName.equals("Bendsound - Energy")) {
+		}else if(titleName.equals("Bensound - Energy")) {
 			if(difficulty.equals("Easy")) Main.NOTE_SPEED = 3;
 			if(difficulty.equals("Hard")) Main.NOTE_SPEED = 6;
-			int startTime = 1000 - Main.REACH_TIME*1000;
+			int startTime = 4460 - Main.REACH_TIME*1000;
 			int gap = 125;
 			beats = new Beat[] {
 					new Beat(startTime + gap * 7, "F"), new Beat(startTime + gap * 10, "K"),
@@ -726,14 +729,14 @@ public class Game extends Thread{
 	}
 
 	public void calcCombo(int i) {
-		if(i!=0) {
-			if(combo>maxCombo) maxCombo = combo;
-			combo++;
-			return;
-		}
-		if(i==0) {
-			synchronized(block) {
-				this.combo = i;
+		synchronized(block) {
+			if(i!=0) {
+				if(combo>maxCombo) maxCombo = combo;
+				combo++;
+				return;
+			}
+			if(i==0) {
+					this.combo = i;
 			}
 		}
 	}
