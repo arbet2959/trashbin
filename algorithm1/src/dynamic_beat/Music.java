@@ -47,10 +47,11 @@ public class Music extends Thread {
 		 try {
 			 do {
 					player.play();
-					player.isComplete();
-					fis = new FileInputStream(file);
-					bis = new BufferedInputStream(fis);
-					player = new Player(bis);
+					if(player.isComplete()) {
+						fis = new FileInputStream(file);
+						bis = new BufferedInputStream(fis);
+						player = new Player(bis);
+					}
 			 } while(isLoop);
 		} catch (Exception e) {
 			System.out.println(e.toString());
