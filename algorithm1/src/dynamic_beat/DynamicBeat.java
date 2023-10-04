@@ -65,6 +65,8 @@ public class DynamicBeat extends JFrame{
 	
 	
 	private Image background = new ImageIcon(Main.class.getClassLoader().getResource("./images/introBackground.jpg")).getImage();
+	private Image rankingBackGround = new ImageIcon(Main.class.getClassLoader().getResource("./images/rankingBackGround.jpg")).getImage();
+	
 	private Image titleImage;
 	private Image selectedImage;
 	
@@ -818,7 +820,8 @@ public class DynamicBeat extends JFrame{
 			game.screenDraw(g);
 		}
 		if(isRanking) {
-		g.setColor(Color.BLACK);
+			g.drawImage(rankingBackGround,150,200,null);
+		g.setColor(Color.WHITE);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setFont(new Font("Arial", Font.BOLD , 35));
 		g.drawString(rankTitle, 400, 150);
@@ -828,7 +831,7 @@ public class DynamicBeat extends JFrame{
 		g.drawString("DIFFICULT",600,250);
 		g.drawString("SCORE",800,250);
 		g.setFont(new Font("Arial", Font.BOLD , 20));
-		g.setColor(Color.green);
+		g.setColor(Color.WHITE);
 		for(int i=0;i<prDTOs.size();i++) {
 			g.drawString(prDTOs.get(i).getIdx()+"", 200, 350+50*i);
 			g.drawString(prDTOs.get(i).getID(), 400, 350+50*i);
@@ -863,6 +866,7 @@ public class DynamicBeat extends JFrame{
 			nowselected--;
 		selectTrack(nowselected);
 	}
+	
 	public void selectRight() {
 		if(nowselected == trackList.size()-1)
 			nowselected = 0;
@@ -891,18 +895,18 @@ public class DynamicBeat extends JFrame{
 	public void gameStart(int nowSelected, String difficulty) {
 		if(selectedMusic !=null) {
 			selectedMusic.close();
-		isMainScreen = false;
-		leftButton.setVisible(false);
-		rightButton.setVisible(false);
-		easyButton.setVisible(false);
-		hardButton.setVisible(false);
-		background = new ImageIcon(Main.class.getClassLoader().getResource("./images/" +trackList.get(nowSelected).getGameImage())).getImage();
-		backButton.setVisible(true);
-		isGameScreen = true;
-		game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic(),loginID);
-		game.start();
-		setFocusable(true);
-		requestFocus();
+			isMainScreen = false;
+			leftButton.setVisible(false);
+			rightButton.setVisible(false);
+			easyButton.setVisible(false);
+			hardButton.setVisible(false);
+			background = new ImageIcon(Main.class.getClassLoader().getResource("./images/" +trackList.get(nowSelected).getGameImage())).getImage();
+			backButton.setVisible(true);
+			isGameScreen = true;
+			game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic(),loginID);
+			game.start();
+			setFocusable(true);
+			requestFocus();
 		}
 	}
 	
@@ -931,6 +935,7 @@ public class DynamicBeat extends JFrame{
 
 		
 	}
+	
 	private void insertSignUp() {
 		String id = txtId.getText(); 
 		String password = new String(txtPassword.getPassword());
@@ -997,6 +1002,7 @@ public class DynamicBeat extends JFrame{
 		signUpInsertButton.setVisible(false);
 		signUpCancleButton.setVisible(false);
 	}
+	
 	private void signUpScreenOn() {
 		lbID.setVisible(true);
 		lbAge.setVisible(true);
@@ -1009,6 +1015,7 @@ public class DynamicBeat extends JFrame{
 		signUpInsertButton.setVisible(true);
 		signUpCancleButton.setVisible(true);
 	}
+	
 	private void insertLoginScreen() {
 		startButton.setVisible(false);
 		quitButton.setVisible(false);
@@ -1053,4 +1060,5 @@ public class DynamicBeat extends JFrame{
 		isRanking = true;
 		
 	}
+	
 }
